@@ -210,18 +210,31 @@
     var url = "https://www.googleapis.com/youtube/v3/search?key=" + key + "&channelId=" + idCanal + "&part=snippet,id&order=date&maxResults=" + resPorPagina;
     // $("#contenedor").append(url);
     $.getJSON(url, function (data) {
-            for (var k in data.items) {
-                var tituloVideo=data.items[k]["snippet"].title;
-                var urlVideo=data.items[k]["id"].videoId;
-                var fechaVideo=data.items[k]["snippet"].publishedAt;
-                var imgVideo=data.items[k]["snippet"].thumbnails["high"].url;
-                if (tituloVideo.match(/Notimagazine/g) == 'Notimagazine') {
-                    $("#notimagazine .swiper-wrapper").append(`<div class="swiper-slide"><div class="d-flex flex-column align-items-start w-100 item-yt"> <img src="${imgVideo}" alt="" class="w-100"><h4><a href="https://www.youtube.com/embed/${urlVideo}" class="modal-yt" data-toggle="modal" data-target="#exampleModal">${tituloVideo}</a></h4><p>${fechaVideo}</p><p><span>44 views</span><span>2 likes</span><span>0 comments</span></p></div></div>`);
-                }
-                if (tituloVideo.match(/Teleconpaz/g) == 'Teleconpaz') {
-                    $("#teleconpaz .swiper-wrapper").append(`<div class="swiper-slide"><div class="d-flex flex-column align-items-start w-100 item-yt"> <img src="${imgVideo}" alt="" class="w-100"><h4><a href="https://www.youtube.com/embed/${urlVideo}" class="modal-yt" data-toggle="modal" data-target="#exampleModal">${tituloVideo}</a></h4><p>${fechaVideo}</p><p><span>44 views</span><span>2 likes</span><span>0 comments</span></p></div></div>`);
-                }
+        for (var k in data.items) {
+          let tituloVideo=data.items[k]["snippet"].title;
+          let urlVideo = [data.items[k]["id"].videoId];
+          let fechaVideo= data.items[k]["snippet"].publishedAt;
+          let date = fechaVideo.split("T");
+          let imgVideo=data.items[k]["snippet"].thumbnails["high"].url;
+          
+          let getVideos = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id="+ urlVideo +"&key="+ key;
+
+          $.getJSON(getVideos, function(data2) {
+
+            let viewCount = data2.items[0].statistics.viewCount;
+            let likeCount = data2.items[0].statistics.likeCount;
+            let commentCount = data2.items[0].statistics.commentCount;
+
+            if (tituloVideo.match(/Notimagazine/g) == 'Notimagazine') {
+                $("#notimagazine .swiper-wrapper").append(`<div class="swiper-slide"><div class="d-flex flex-column align-items-start w-100 item-yt"> <img src="${imgVideo}" alt="" class="w-100"><h4><a href="https://www.youtube.com/embed/${urlVideo}" class="modal-yt" data-toggle="modal" data-target="#exampleModal">${tituloVideo}</a></h4><p>${date[0]}</p><p><span>${viewCount} views</span><span> ${likeCount} likes</span><span> ${commentCount} comments</span></p></div></div>`);
             }
+            if (tituloVideo.match(/Teleconpaz/g) == 'Teleconpaz') {
+                $("#teleconpaz .swiper-wrapper").append(`<div class="swiper-slide"><div class="d-flex flex-column align-items-start w-100 item-yt"> <img src="${imgVideo}" alt="" class="w-100"><h4><a href="https://www.youtube.com/embed/${urlVideo}" class="modal-yt" data-toggle="modal" data-target="#exampleModal">${tituloVideo}</a></h4><p>${date[0]}</p><p><span>${viewCount} views</span><span> ${likeCount} likes</span><span> ${commentCount} comments</span></p></div></div>`);
+            }
+            data();
+
+          });
+        }        
     });
     setTimeout(function(){
         //swiper
