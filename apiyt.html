@@ -208,7 +208,6 @@
     var key = "AIzaSyCy2VWvmzx6a9kj4XMlZZMjSZ0p2rDRl0A";
     var idCanal = "UCVyNc8oBOJb2CKPPjJLCkaQ";
     var url = "https://www.googleapis.com/youtube/v3/search?key=" + key + "&channelId=" + idCanal + "&part=snippet,id&order=date&maxResults=" + resPorPagina;
-    // $("#contenedor").append(url);
     $.getJSON(url, function (data) {
         for (var k in data.items) {
           let tituloVideo=data.items[k]["snippet"].title;
@@ -231,7 +230,7 @@
             if (tituloVideo.match(/Teleconpaz/g) == 'Teleconpaz') {
                 $("#teleconpaz .swiper-wrapper").append(`<div class="swiper-slide"><div class="d-flex flex-column align-items-start w-100 item-yt"> <img src="${imgVideo}" alt="" class="w-100"><h4><a href="https://www.youtube.com/embed/${urlVideo}" class="modal-yt" data-toggle="modal" data-target="#exampleModal">${tituloVideo}</a></h4><p>${date[0]}</p><p><span>${viewCount} views</span><span> ${likeCount} likes</span><span> ${commentCount} comments</span></p></div></div>`);
             }
-            data();
+            // data();
 
           });
         }        
