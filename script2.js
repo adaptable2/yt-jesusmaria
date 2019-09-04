@@ -1,17 +1,16 @@
+function clickon(){
+    let urlyt = $('.modal-yt').attr('href');
+    $('.modal-body iframe').attr('src',`${urlyt}?autoplay=1&loop=1&rel=0&wmode=transparent`); 
+}
+
 $(document).ready(function () {
     $('button.close,.modal').on('click',function(){
         $('.modal-body iframe').attr('src','');
     });
 
-    function clickon(){
-        console.log('cushhh');    
-    }
-
-    // $('.modal-yt').click(function(){
-    //     console.log('cushhh');
-    //     let urlyt = $(this).attr('href');
-    //     $('.modal-body iframe').attr('src',`${urlyt}?autoplay=1&loop=1&rel=0&wmode=transparent`);
-    // });
+    $('.modal-yt').click(function(){
+        clickon();
+    });
 
     //api youtube
     var key = 'AIzaSyCy2VWvmzx6a9kj4XMlZZMjSZ0p2rDRl0A';
@@ -45,8 +44,10 @@ $(document).ready(function () {
             resultsLoopnoti(data);
         });
     }
+
     loadVidsnoti();
     loadVidspaz();
+
     function resultsLooppaz(data) {
         $.each(data.items, function (i, item) {
             let thumb = item.snippet.thumbnails.medium.url;
