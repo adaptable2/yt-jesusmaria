@@ -2,9 +2,9 @@ function clickon(){
     let urlyt = $('.modal-yt').attr('href');
     $('.modal-body iframe').attr('src',`${urlyt}?autoplay=1&loop=1&rel=0&wmode=transparent`); 
 }
-
 $(document).ready(function () {
     $('button.close,.modal').on('click',function(){
+        $('.modal').removeClass('show');
         $('.modal-body iframe').attr('src','');
     });
 
@@ -129,9 +129,9 @@ $(document).ready(function () {
             $('#teleconpaz .swiper-wrapper').append(`
                 <div class="swiper-slide">
                 <div class="d-flex flex-column align-items-start w-100 item-yt">
-                <a href="https://www.youtube.com/embed/${videoList[i].video}" class="modal-yt" data-toggle="modal" data-target="#exampleModal"><img src="${videoList[i].link}" alt="" class="w-100"></a>
+                <a href="https://www.youtube.com/embed/${videoList[i].video}" class="modal-yt" onclick="clickon()" data-toggle="modal" data-modal="#exampleModal"><img src="${videoList[i].link}" alt="" class="w-100"></a>
                 <h4>
-                <a href="https://www.youtube.com/embed/${videoList[i].video}" class="modal-yt" data-toggle="modal" data-target="#exampleModal">${videoList[i].titulo}</a>
+                <a href="https://www.youtube.com/embed/${videoList[i].video}" class="modal-yt" onclick="clickon()" data-toggle="modal" data-target="#exampleModal">${videoList[i].titulo}</a>
                 </h4>
                 <p>${videoList[i].fechaitem}</p>
                 <p>
@@ -148,7 +148,7 @@ $(document).ready(function () {
         //swiper
         var mySwiper = new Swiper('.swiper-container', {
           slidesPerView: 4,
-          slidesPerColumn: 2,
+          slidesPerColumn: 1,
           spaceBetween: 10,
           navigation: {
             nextEl: '.swiper-button-next',
@@ -162,15 +162,28 @@ $(document).ready(function () {
               },
             }   
         });
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-          var paneTarget = $(e.target).attr('href');
-          var $thePane = $('.tab-pane' + paneTarget);
-          var paneIndex = $thePane.index();
-          if ($thePane.find('.swiper-container').length > 0 && 0 === $thePane.find('.swiper-slide-active').length) {
-            mySwiper[paneIndex].update();
-        }
-    });
+        //$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {var paneTarget = $(e.target).attr('href'); var $thePane = $('.tab-pane' + paneTarget); var paneIndex = $thePane.index(); if ($thePane.find('.swiper-container').length > 0 && 0 === $thePane.find('.swiper-slide-active').length) {mySwiper[paneIndex].update(); } });
+        $('.nav-link').on('click',function(e){
+            e.preventDefault();
+            var paneTarget = $(this).attr('href');
+            var $thePane = $('.tab-pane' + paneTarget);
+            var paneIndex = $thePane.index();
+
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+            $('.tab-pane').removeClass('active');
+            $(paneTarget).addClass('active');
+
+            if ($thePane.find('.swiper-container').length > 0 && 0 === $thePane.find('.swiper-slide-active').length) {
+                mySwiper[paneIndex].update();
+            }
+        })   
+        $('.modal-yt').on('click',function(e){
+            e.preventDefault();
+            $('.modal').addClass('show');
+        });
+
     }, 2000);
 });
 
-
+//onclick="clickon()"
